@@ -14,11 +14,11 @@ export const useWishlistStore = defineStore('wishlist', () => {
 
   const removeFromWishlist = (product) => {
     console.log('remove...', product);
-    items.value = items.value.filter(item => item.id !== product.id)
+    items.value = items.value.filter(item => item.$id !== product.$id)
   }
 
   const isWishlist = (product) => {
-    return items.value.some(item => item.id === product.id)
+    return items.value.some(item => item.$id === product.$id)
   }
 
   return {

@@ -20,7 +20,8 @@ export class DatabaseService {
       );
       return document;
     } catch (err) {
-      console.error(err);
+      // console.error(err);
+      throw err
     }
   }
 
@@ -34,7 +35,8 @@ export class DatabaseService {
       );
       return documents;
     } catch (err) {
-      console.error(err);
+      // console.error(err);
+      throw err
     }
   }
 
@@ -45,11 +47,12 @@ export class DatabaseService {
         collectionID, // collectionId
         ID.unique(), // documentId
         data, // data
-        ["read('any')"] // permissions (optional)
+        // ["read('any')"] // permissions (optional)
       );
       return document;
     } catch (err) {
-      console.error(err);
+      // console.error(err);
+      throw err
     }
   }
 
@@ -58,14 +61,14 @@ export class DatabaseService {
       const updatedDocument = await this.database.updateDocument(
         appwriteConf.databaseID, // databaseId
         collectionID, // collectionId
-        documentID, // collectionId
-        ID.unique(), // documentId
+        documentID, // documentId
         data, // data
-        ["read('any')"] // permissions (optional)
+        // ["read('any')"] // permissions (optional)
       );
       return updatedDocument;
     } catch (err) {
-      console.error(err);
+      // console.error(err);
+      throw err
     }
   }
 
@@ -77,7 +80,8 @@ export class DatabaseService {
         documentID // documentId
       );
     } catch (err) {
-      console.error(err);
+      // console.error(err);
+      throw err
     }
   }
 }

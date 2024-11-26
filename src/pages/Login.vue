@@ -116,6 +116,7 @@ const submitForm = async () => {
   try {
     await authStore.loginUser(form.value.email, form.value.password);
     console.log(`Login Successful! Email: ${form.value.email}`);
+    form.value = { email: "", password: "", rememberMe: false };
     router.push({name: 'Home'})
   } catch (error) {
     console.error("Login failed:", error.message);
@@ -124,7 +125,6 @@ const submitForm = async () => {
   }
 
   // Reset form
-  form.value = { email: "", password: "", rememberMe: false };
 };
 
 

@@ -57,9 +57,23 @@ const routes = [
   },
   {
     path: '/admin',
-    name: 'Admin',
-    component: () => import('@/pages/Admin.vue'),
+    children: [
+      {
+        name: 'Admin',
+        path: '',
+        component: () => import('@/pages/admin/Dashboard.vue'),
+      },{
+        path: 'crud',
+        name: 'Crud',
+        component: () => import('@/pages/admin/Crud.vue'),
+      }
+    ]
   }
+  // {
+  //   path: '/admin',
+  //   name: 'Admin',
+  //   component: () => import('../layouts/AdminLayout.vue'),
+  // }
 
 ]
 

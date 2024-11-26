@@ -27,7 +27,7 @@
         <v-card-text>
           <v-row align="center" class="mx-0">
             <v-rating
-              :model-value="4.5"
+              :model-value="product.average_rating"
               color="amber"
               density="compact"
               size="small"
@@ -36,7 +36,7 @@
             ></v-rating>
 
             <div class="text-grey ms-4">
-              {{ product.reviews.rating }} ({{ product.reviews.count }})
+              {{ product.average_rating }} ({{ product.reviews.length }})
             </div>
           </v-row>
 
@@ -162,21 +162,12 @@
 </template>
 
 <script setup>
+import { useReviewStore } from "@/stores";
 import { useWishlistStore } from "@/stores/wishlistStore";
-
-const data = () => ({
-  loading: false,
-  selection: 1,
-});
-
-function reserve() {
-  this.loading = true;
-
-  setTimeout(() => (this.loading = false), 2000);
-}
 
 const props = defineProps(["product"]);
 const wishlistStore = useWishlistStore();
+const reviewStore = useReviewStore()
 </script>
 
 <style scoped>
