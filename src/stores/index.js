@@ -5,5 +5,7 @@ import { useWishlistStore } from "./wishlistStore";
 import { useCartStore } from "./cartStore";
 import { useReviewStore } from "./ReviewStore";
 import { useOrderStore } from "./orderStore";
+import { useBucketStore } from "./bucketStore";
 
-export { useAuthStore, useCategoryStore, useProductStore, useWishlistStore, useCartStore, useReviewStore, useOrderStore }
+
+export { useAuthStore, useBucketStore, useCategoryStore, useProductStore, useWishlistStore, useCartStore, useReviewStore, useOrderStore }

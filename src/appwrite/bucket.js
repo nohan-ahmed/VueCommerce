@@ -1,6 +1,6 @@
 import appwriteConf from "@/config/conf";
 import { Client, Storage, ID } from "appwrite";
-class BucketService {
+export class BucketService {
   client = new Client();
   bucket;
   constructor() {
@@ -9,14 +9,25 @@ class BucketService {
     this.bucket = new Storage(this.client);
   }
 
-  async uploadFile(file, permissions = ["read", "write"]) {
+  async listFiles(queries = []) {
     try {
-      const fileID = ID.unique();
-      const uploadedFile = await this.bucket.uploadFile(
+      const fiels = await this.bucket.listFiles(
         appwriteConf.bucketID, // bucketId
-        fileID, // fileId
+        queries, // queries (optional)
+      );
+      return fiels
+    } catch (err) {
+      console.error(err);
+      // throw err
+    }
+  }
+
+  async uploadFile(file) {
+    try {
+      const uploadedFile = await this.bucket.createFile(
+        appwriteConf.bucketID, // bucketId
+        ID.unique(), // fileId
         file, // file
-        permissions // permissions (optional)
       );
       return uploadedFile;
     } catch (err) {
@@ -49,7 +60,7 @@ class BucketService {
 
   getFilePreview(fileID) {
     try {
-      const filePreview = this.bucket.getFilePreview(
+      const filePreview = this.bucket.getFileView(
         appwriteConf.bucketID, // bucketId
         fileID, // fileId
       );
@@ -62,3 +73,5 @@ class BucketService {
 
 }
 
+const bucketService = new BucketService();
+export default bucketService

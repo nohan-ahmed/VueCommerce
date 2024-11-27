@@ -36,7 +36,7 @@
             >
               <td>{{ item.$id }}</td>
               <td>{{ item.name }}</td>
-              <td><img :src="item.thumbnail" alt="" width="60px" /></td>
+              <td><img :src="bucketStore.filePreview(item.thumbnail)" alt="" width="60px" /></td>
               <td>${{ item.price }}</td>
               <td>{{ item.categories[0].name }}</td>
               <td>
@@ -81,7 +81,11 @@
 
             <v-card-text>
               <v-form ref="form" @submit.prevent="saveProduct">
-                <v-file-input accept="image/*" label="Thumbnail"></v-file-input>
+                <v-file-input
+                  v-model="thumbnailInput"
+                  accept="image/*"
+                  label="Thumbnail"
+                ></v-file-input>
 
                 <v-text-field
                   v-model="formData.name"
@@ -186,13 +190,13 @@
 
 <script setup>
 import AdminLayout from "@/layouts/AdminLayout.vue";
-import { useCategoryStore, useProductStore } from "@/stores";
+import { useBucketStore, useCategoryStore, useProductStore } from "@/stores";
 import { computed, onMounted, ref, watch } from "vue";
 
 // Products data (simulated, replace with API data in real app)
 const productStore = useProductStore();
 const categoryStore = useCategoryStore();
-
+const bucketStore = useBucketStore();
 onMounted(async () => {
   try {
     await categoryStore.fetchCategories();
@@ -204,11 +208,16 @@ onMounted(async () => {
   }
 });
 
+// Handle files.
+const thumbnailInput = ref(null);
+
 // Select categories
 const selectedItems = ref([]);
-watch(selectedItems, () => {
-  // console.log(selectedItems.value, "...");
-});
+// watch(thumbnailInput, async() => {
+//   // console.log(selectedItems.value, "...");
+//   const result = await bucketStore.uploadFile(thumbnailInput)
+//   console.log("After file uploaded: ", result);
+// });
 
 // Computed properties
 const likesAllItems = computed(
@@ -251,6 +260,7 @@ const deleteDialog = ref(false);
 const isEditMode = ref(false);
 const form = ref(null);
 const formData = ref({
+  thumbnail:"",
   name: "",
   regular_price: 0,
   price: 0,
@@ -259,6 +269,8 @@ const formData = ref({
 });
 
 let deleteProductId = null; // Holds product ID to be deleted
+
+// File handle
 
 // Validation rules
 const rules = {
@@ -300,14 +312,19 @@ const saveProduct = async () => {
       ...formData.value,
       categories: selectedItems.value, // Include selected categories
     };
+    // Imgage uploaded task here.
+    const uploadedFile = await bucketStore.uploadFile(thumbnailInput.value);
+    productData.thumbnail = uploadedFile.$id
 
     if (isEditMode.value) {
-      const updateProduct = await productStore.updateProduct(productData.$id, productData);
-      console.log("Product updated:", updateProduct);
+      const updateProduct = await productStore.updateProduct(
+        productData.$id,
+        productData
+      );
     } else {
       // Add a new product
       await productStore.addProduct(productData);
-      console.log("Product added:", productData);
+      console.log("After file uploaded: ", uploadedFile);
     }
 
     dialog.value = false; // Close the dialog after saving

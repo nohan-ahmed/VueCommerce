@@ -141,3 +141,4 @@ const team = [
   padding: 40px 20px;
 }
 </style>
+

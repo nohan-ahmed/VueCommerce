@@ -58,13 +58,13 @@ export const useProductStore = defineStore('productStore', () => {
     }
   };
 
-  const updateProduct = async (productID, { name, regular_price, price, categories, description, quantity }) => {
+  const updateProduct = async (productID, { thumbnail, name, regular_price, price, categories, description, quantity }) => {
     try {
       error.value = null;
       // Calculate discount
       const discount = parseFloat(useCalculateDiscount(regular_price, price).discountPercentage);
       // Update the doc
-      const updatedProduct = await databaseService.updateDocument(collectionID, productID, { name, regular_price, price, discount, categories, description, quantity });
+      const updatedProduct = await databaseService.updateDocument(collectionID, productID, { thumbnail, name, regular_price, price, discount, categories, description, quantity });
       // Update local state
       const index = products.value.findIndex((prod) => prod.$id === productID);
       if (index !== -1) products.value[index] = updatedProduct;
