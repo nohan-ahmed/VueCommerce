@@ -37,7 +37,7 @@ VueCommerce is a modern e-commerce application designed to deliver a seamless on
 
 1. **Clone the repository:**  
    ```bash  
-   git clone https://github.com/your-username/vuecommerce.git  
+   git clone https://github.com/nohan-ahmed/VueCommerce.git 
    ```  
 
 2. **Navigate to the project folder:**  
