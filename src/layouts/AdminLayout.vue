@@ -52,6 +52,7 @@ const drawer = ref(false); // Sidebar starts open
 const navItems = ref([
   { title: "Dashboard", icon: "mdi-view-dashboard", route: {name: 'Admin'}},
   { title: "Products", icon: "mdi-cube-outline", route: {name :'Crud'} },
+  { title: "Category", icon: "mdi-format-list-bulleted", route: {name :'Category'} },
   { title: "Orders", icon: "mdi-cart-outline", route:{name: 'Orders'} },
   {
     title: "Customers",

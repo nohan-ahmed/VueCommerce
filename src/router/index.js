@@ -59,7 +59,7 @@ const routes = [
   {
     path: '/category/:id',
     name: 'Category',
-    component: () => import('@/pages/Category.vue'),
+    component: () => import('@/pages/S.vue'),
   },
 
   {
@@ -74,6 +74,12 @@ const routes = [
         name: 'Crud',
         component: () => import('@/pages/admin/Crud.vue'),
       },
+      {
+        path : 'category',
+        name: 'Category',
+        component: () => import('@/pages/admin/Category.vue'),
+
+      }
     ]
   }
 

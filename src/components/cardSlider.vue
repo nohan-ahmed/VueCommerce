@@ -15,7 +15,7 @@
         >
           <v-img
             @click="$emit('riderectRoute', item)"
-            :src="item.img ? bucketStore.filePreview(item.img) : null"
+            :src="item.thumbnail ? bucketStore.filePreview(item.thumbnail) : null"
             class="align-end"
             gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
             height="200"

@@ -54,7 +54,7 @@ export const useCategoryStore = defineStore('categoryStore', () => {
       error.value = null
       const updatedCategory = await databaseService.updateDocument(collectionID, categoryID, data)
       // Update local state
-      const index = categories.value.findIndex((prod) => prod.$id === productID);
+      const index = categories.value.findIndex((cat) => cat.$id === categoryID);
       if (index !== -1) categories.value[index] = updatedCategory;
 
       return updatedCategory;
