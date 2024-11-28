@@ -12,7 +12,7 @@
         </template>
 
         <span class="discount">{{ product.discount }}% off</span>
-        <v-img height="250" :src="product.thumbnail" cover></v-img>
+        <v-img height="250" :src="bucketStore.filePreview(product.thumbnail)" cover></v-img>
 
         <v-card-item>
           <v-card-title>{{ product.name }}</v-card-title>
@@ -41,8 +41,8 @@
           </v-row>
 
           <div class="my-4 text-subtitle-1 price">
-            ${{ product.price }}
             <s style="color: #868fa3">${{ product.regular_price }}</s>
+            ${{ product.price }}
           </div>
         </v-card-text>
 
@@ -162,12 +162,13 @@
 </template>
 
 <script setup>
-import { useReviewStore } from "@/stores";
+import { useBucketStore, useReviewStore } from "@/stores";
 import { useWishlistStore } from "@/stores/wishlistStore";
 
 const props = defineProps(["product"]);
 const wishlistStore = useWishlistStore();
 const reviewStore = useReviewStore()
+const bucketStore = useBucketStore()
 </script>
 
 <style scoped>

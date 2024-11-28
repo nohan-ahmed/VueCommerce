@@ -75,7 +75,7 @@ export const useProductStore = defineStore('productStore', () => {
       throw err;
     }
   };
-
+  
   const deleteProduct = async (productID) => {
     try {
       error.value = null;

@@ -8,6 +8,7 @@
 // Composables
 import { createRouter, createWebHistory } from 'vue-router/auto'
 import HomeView from '../pages/Home.vue'
+import { components } from 'vuetify/dist/vuetify-labs.js'
 
 const routes = [
   {
@@ -56,24 +57,25 @@ const routes = [
     component: () => import('@/pages/Login.vue'),
   },
   {
+    path: '/category/:id',
+    name: 'Category',
+    component: () => import('@/pages/Category.vue'),
+  },
+
+  {
     path: '/admin',
     children: [
       {
         name: 'Admin',
         path: '',
         component: () => import('@/pages/admin/Dashboard.vue'),
-      },{
+      }, {
         path: 'crud',
         name: 'Crud',
         component: () => import('@/pages/admin/Crud.vue'),
-      }
+      },
     ]
   }
-  // {
-  //   path: '/admin',
-  //   name: 'Admin',
-  //   component: () => import('../layouts/AdminLayout.vue'),
-  // }
 
 ]
 

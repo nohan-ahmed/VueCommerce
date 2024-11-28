@@ -22,6 +22,17 @@ export class BucketService {
     }
   }
 
+  async getFile(fileID) {
+    try {
+      const result = await this.bucket.getFile(
+        appwriteConf.bucketID, // bucketId
+        fileID// fileId
+      );
+      return result
+    } catch (err) {
+      throw err
+    }
+  }
   async uploadFile(file) {
     try {
       const uploadedFile = await this.bucket.createFile(
@@ -46,6 +57,7 @@ export class BucketService {
       console.error(err);
     }
   }
+
 
   async deleteFile(fileID) {
     try {

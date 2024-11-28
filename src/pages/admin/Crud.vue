@@ -36,7 +36,13 @@
             >
               <td>{{ item.$id }}</td>
               <td>{{ item.name }}</td>
-              <td><img :src="bucketStore.filePreview(item.thumbnail)" alt="" width="60px" /></td>
+              <td>
+                <img
+                  :src="bucketStore.filePreview(item.thumbnail)"
+                  alt=""
+                  width="60px"
+                />
+              </td>
               <td>${{ item.price }}</td>
               <td>{{ item.categories[0].name }}</td>
               <td>
@@ -260,7 +266,7 @@ const deleteDialog = ref(false);
 const isEditMode = ref(false);
 const form = ref(null);
 const formData = ref({
-  thumbnail:"",
+  thumbnail: "",
   name: "",
   regular_price: 0,
   price: 0,
@@ -280,15 +286,18 @@ const rules = {
 
 // Open Add/Edit Dialog
 // Open Add/Edit Dialog
-const openDialog = (product = null) => {
+const openDialog = async(product = null) => {
   isEditMode.value = !!product; // Check if in edit mode
 
   if (product) {
     formData.value = { ...product }; // Load product data into form
     selectedItems.value = product.categories.map((category) => category.$id); // Load categories
+
+    thumbnailInput.value = await bucketStore.getFile(product.thumbnail) // Load file
   } else {
     formData.value = {
       // Reset form fields
+      thumbnail: "",
       name: "",
       regular_price: 0,
       price: 0,
@@ -296,6 +305,7 @@ const openDialog = (product = null) => {
       description: "",
     };
     selectedItems.value = []; // Reset selected categories
+    thumbnailInput.value = null; // Reset selected file
   }
 
   dialog.value = true; // Open the dialog
@@ -312,16 +322,23 @@ const saveProduct = async () => {
       ...formData.value,
       categories: selectedItems.value, // Include selected categories
     };
-    // Imgage uploaded task here.
-    const uploadedFile = await bucketStore.uploadFile(thumbnailInput.value);
-    productData.thumbnail = uploadedFile.$id
 
     if (isEditMode.value) {
+      productData.thumbnail = thumbnailInput
+        ? (await bucketStore.updateFile(productData.thumbnail)).$id
+        : productData.thumbnail;
+      // console.log('updatedFile: ', updatedFile);
+      // update product
       const updateProduct = await productStore.updateProduct(
         productData.$id,
         productData
       );
+      console.log("product before update: ", productData.thumbnail);
+      console.log("product after update: ", updateProduct.thumbnail);
     } else {
+      // Imgage uploaded task here.
+      // const uploadedFile = await bucketStore.uploadFile(thumbnailInput.value);
+      // productData.thumbnail = uploadedFile.$id;
       // Add a new product
       await productStore.addProduct(productData);
       console.log("After file uploaded: ", uploadedFile);

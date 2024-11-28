@@ -22,6 +22,18 @@ export const useBucketStore = defineStore('bucketStore', () => {
     }
   };
 
+  const getFile = async (fileID) => {
+    try {
+      error.value = null
+      console.log(fileID);
+      return await bucketService.getFile(fileID)
+
+    } catch (err) {
+      error.value = err.message
+      console.log(err)
+    }
+  }
+
   // Upload a new file to the bucket
   const uploadFile = async (file) => {
     try {
@@ -37,6 +49,16 @@ export const useBucketStore = defineStore('bucketStore', () => {
       loading.value = false;
     }
   };
+
+  const updateFile = async (fileID) => {
+    try {
+      error.value = null
+      const updatedFile = await bucketService.updateFile(fileID)
+      return updatedFile
+    } catch (err) {
+      error.value = err.message
+    }
+  }
 
   // Delete a file from the bucket
   const deleteFile = async (fileID) => {
@@ -55,7 +77,6 @@ export const useBucketStore = defineStore('bucketStore', () => {
       error.value = null
       loading.value = true
       const url = bucketService.getFilePreview(fileID)
-      console.log(url);
       return url
     } catch (err) {
       error.value = err.message
@@ -69,7 +90,9 @@ export const useBucketStore = defineStore('bucketStore', () => {
     loading,
     error,
     fetchFiles,
+    getFile,
     uploadFile,
+    updateFile,
     deleteFile,
     filePreview
   };
