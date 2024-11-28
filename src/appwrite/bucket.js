@@ -52,6 +52,7 @@ export class BucketService {
         appwriteConf.bucketID,
         fileID,
       );
+      console.log('file after updated: ', updatedFile);
       return updatedFile;
     } catch (err) {
       console.error(err);

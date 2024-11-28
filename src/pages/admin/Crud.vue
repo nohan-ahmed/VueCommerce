@@ -286,14 +286,14 @@ const rules = {
 
 // Open Add/Edit Dialog
 // Open Add/Edit Dialog
-const openDialog = async(product = null) => {
+const openDialog = async (product = null) => {
   isEditMode.value = !!product; // Check if in edit mode
 
   if (product) {
     formData.value = { ...product }; // Load product data into form
     selectedItems.value = product.categories.map((category) => category.$id); // Load categories
 
-    thumbnailInput.value = await bucketStore.getFile(product.thumbnail) // Load file
+    thumbnailInput.value = await bucketStore.getFile(product.thumbnail); // Load file
   } else {
     formData.value = {
       // Reset form fields
@@ -324,24 +324,26 @@ const saveProduct = async () => {
     };
 
     if (isEditMode.value) {
-      productData.thumbnail = thumbnailInput
-        ? (await bucketStore.updateFile(productData.thumbnail)).$id
-        : productData.thumbnail;
-      // console.log('updatedFile: ', updatedFile);
+      if (thumbnailInput.value.$id !== productData.thumbnail) {
+
+        await bucketStore.deleteFile(productData.thumbnail)
+        const newFile = await bucketStore.uploadFile(thumbnailInput.value)
+        console.log("updatedFile: ", newFile);
+        productData.thumbnail = newFile.$id // Update the product's thumbnail with newly uploaded thumbnail.$id
+      }
+
       // update product
       const updateProduct = await productStore.updateProduct(
         productData.$id,
         productData
       );
-      console.log("product before update: ", productData.thumbnail);
-      console.log("product after update: ", updateProduct.thumbnail);
+
     } else {
       // Imgage uploaded task here.
-      // const uploadedFile = await bucketStore.uploadFile(thumbnailInput.value);
-      // productData.thumbnail = uploadedFile.$id;
+      const uploadedFile = await bucketStore.uploadFile(thumbnailInput.value);
+      productData.thumbnail = uploadedFile.$id;
       // Add a new product
       await productStore.addProduct(productData);
-      console.log("After file uploaded: ", uploadedFile);
     }
 
     dialog.value = false; // Close the dialog after saving
