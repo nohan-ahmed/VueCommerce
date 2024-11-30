@@ -41,8 +41,8 @@
           </v-row>
 
           <div class="my-4 text-subtitle-1 price">
-            <s style="color: #868fa3">${{ product.regular_price }}</s>
             ${{ product.price }}
+            <s style="color: #868fa3">${{ product.regular_price }}</s>
           </div>
         </v-card-text>
 

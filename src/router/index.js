@@ -57,9 +57,9 @@ const routes = [
     component: () => import('@/pages/Login.vue'),
   },
   {
-    path: '/category/:id',
-    name: 'Category',
-    component: () => import('@/pages/S.vue'),
+    path: '/shop/:cat',
+    name: 'Shop',
+    component: () => import('@/pages/ShopPage.vue'),
   },
 
   {

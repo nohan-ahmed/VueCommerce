@@ -8,13 +8,28 @@
     ></v-app-bar-nav-icon>
 
     <!-- Brand Logo -->
-    <v-toolbar-title>
+    <v-toolbar-title class="mr-4">
       <RouterLink
         to="/"
         class="font-weight-bold text-decoration-none text-blue-lighten-4"
-        >E-Shop</RouterLink
       >
+        E-Shop
+      </RouterLink>
     </v-toolbar-title>
+
+    <!-- Search Bar (Desktop Only) -->
+    <v-text-field
+      v-model="searchQuery"
+      class="d-none d-sm-flex mx-4"
+      placeholder="Search products..."
+      density="comfortable"
+      prepend-inner-icon="mdi-magnify"
+      hide-details
+      solo-inverted
+      flat
+      clearable
+      @keyup.enter="handleSearch"
+    />
 
     <!-- Desktop Menu -->
     <v-spacer />
@@ -24,6 +39,11 @@
     <v-btn :to="{ name: 'Contact' }" text class="d-none d-sm-flex"
       >Contact</v-btn
     >
+
+    <!-- Mobile Search Icon -->
+    <v-btn icon class="d-sm-none" @click="showMobileSearch = !showMobileSearch">
+      <v-icon>mdi-magnify</v-icon>
+    </v-btn>
 
     <!-- Wishlist Icon -->
     <v-btn icon>
@@ -42,33 +62,50 @@
       <template v-slot:activator="{ props }">
         <v-btn icon="mdi-account" variant="text" v-bind="props"></v-btn>
       </template>
-
+      <!-- User menu as before -->
       <v-list class="mt-2">
-        <!-- authentication -->
         <v-list-item key="auth" v-if="authStore.isAuthenticated">
-          <v-btn :to="{ name: 'Login' }">Profile</v-btn>
+          <v-btn :to="{ name: 'Profile' }">Profile</v-btn>
         </v-list-item>
 
         <v-list-item key="profile" v-else>
-          <v-btn :to="{ name: 'Login' }">Sing-in / Sing-up</v-btn>
+          <v-btn :to="{ name: 'Login' }">Sign-in / Sign-up</v-btn>
         </v-list-item>
         <hr />
         <v-list-item v-for="(item, i) in menuItems" :key="i">
-          <RouterLink :to="{ name: item.title }" class="text-decoration-none"
-            ><v-icon class="mr-2">{{ item.icon }}</v-icon
-            >{{ item.title }}</RouterLink
-          >
+          <RouterLink :to="{ name: item.title }" class="text-decoration-none">
+            <v-icon class="mr-2">{{ item.icon }}</v-icon>
+            {{ item.title }}
+          </RouterLink>
         </v-list-item>
 
-        <!-- logout -->
+        <!-- Logout -->
         <v-list-item key="logout" v-if="authStore.isAuthenticated">
           <v-btn width="100%" @click="authStore.logoutUser()">Logout</v-btn>
         </v-list-item>
       </v-list>
     </v-menu>
-
-    <!-- Dropdown Menu -->
   </v-app-bar>
+
+  <!-- Mobile Search Bar Modal -->
+  <v-dialog v-model="showMobileSearch" width="90%">
+    <v-card>
+      <v-card-title class="d-flex align-center">
+        <v-text-field
+          v-model="searchQuery"
+          label="Search products..."
+          density="compact"
+          autofocus
+          prepend-inner-icon="mdi-magnify"
+          clearable
+          @keyup.enter="handleSearch"
+        ></v-text-field>
+        <v-btn icon @click="showMobileSearch = false">
+          <v-icon>mdi-close</v-icon>
+        </v-btn>
+      </v-card-title>
+    </v-card>
+  </v-dialog>
 
   <!-- Mobile Navigation Drawer -->
   <v-navigation-drawer v-model="drawer" app temporary class="d-sm-none">
@@ -90,28 +127,29 @@
 </template>
 
 <script setup>
+import { ref } from "vue";
 import { useAuthStore } from "@/stores/authStore";
 import { useCartStore } from "@/stores/cartStore";
 import { useWishlistStore } from "@/stores/wishlistStore";
-import { reactive, ref } from "vue";
 
-// manu items list
-const menuItems = [
-  { title: "Wishlist", icon: "mdi-heart" },
-  { title: "Cart", icon: "mdi-cart" },
-  { title: "Orders", icon: "mdi-clipboard-list-outline" },
-];
-
-// navbar
-const drawer = ref(false);
+// Stores
+const authStore = useAuthStore();
 const cartStore = useCartStore();
 const wishlistStore = useWishlistStore();
 
-// Define store
-const authStore = useAuthStore();
+// Search functionality
+const searchQuery = ref("");
+const showMobileSearch = ref(false);
 
+const handleSearch = () => {
+  if (searchQuery.value.trim() !== "") {
+    console.log("Searching for:", searchQuery.value);
+    // Implement search logic or route navigation here
+  }
+};
 
-
+// Mobile drawer
+const drawer = ref(false);
 </script>
 
 <style scoped>
@@ -121,4 +159,5 @@ const authStore = useAuthStore();
   font-size: 12px;
   font-family: monospace;
 }
+
 </style>

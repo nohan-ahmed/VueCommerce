@@ -78,7 +78,7 @@ onMounted(async () => {
 
 // Event handling.
 const riderectRouteHandle = (cat) => {
-  router.push({ name: "Category", params: { id: cat.$id } });
+  router.push({ name: "Shop", params: { cat: cat.$id } });
 };
 </script>
 
